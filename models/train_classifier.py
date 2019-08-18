@@ -43,21 +43,21 @@ def tokenize(text):
     """
     # nomalize case and remove punctuation
     text = re.sub(r"[^a-zA-Z0-9]"," ",text.lower())
-    
+
     # tokenize text
     tokens = word_tokenize(text)
-    
+
     # lemmatize and remove stop words
     stop_words = stopwords.words("english")
     lemmatizer = WordNetLemmatizer()
     tokens = [lemmatizer.lemmatize(word).strip() for word in tokens if word not in stop_words]
-    
+
     return tokens
 
 
 def build_model():
     """
-    create pipeline, CountVectorizer, TfidfTransformer and Multioutputclassifier. Use cross validation to optimize 
+    create pipeline, CountVectorizer, TfidfTransformer and Multioutputclassifier. Use cross validation to optimize
     the parameters.
     """
     # create pipeline
@@ -68,22 +68,32 @@ def build_model():
     ])
     # set parameters wanted to optimize
     paramaters = {
-    'tfidf__use_idf':(True,False),
-    'clf__estimator__n_estimators':[50,100],
-    'clf__estimator__learning_rate':[0.05,0.1]
+    'clf__estimator__n_estimators':[100,200],
+    'clf__estimator__learning_rate':[0.5,1]
     }
     # cross validation to tune parameters
     cv = GridSearchCV(pipeline, param_grid = paramaters,verbose = 2,n_jobs = -1)
     return cv
 
-def evaluate_model(model, X_test, Y_test, category_names):
+def evaluate_model(model, X_test, y_test, category_names):
     """
     this function evaluates the model result.
     input: optimized model, test data, X, Y, and output categories
     output: precision, recall, f1-score and support
     """
-    Y_pred = model.predict(X_test)
-    print(classification_report(Y_test,Y_pred,target_names = category_names))
+    y_pred = model.predict(X_test)
+    i=0
+    sum = 0
+    for name in category_names:
+        y1_test = y_test[name].values
+        y1_pred = y_pred[:,i]
+        i=+1
+        print(name)
+        print(classification_report(y1_test,y1_pred))
+        sum+= f1_score(y1_test,y1_pred,average = 'weighted')
+
+    print("Average weighted f1_score {}".format(sum/len(category_names)))
+
 
 
 def save_model(model, model_filepath):
@@ -93,7 +103,7 @@ def save_model(model, model_filepath):
     """
     with open(model_filepath,'wb') as file:
         pickle.dump(model,file)
-    
+
 
 
 def main():
@@ -102,13 +112,13 @@ def main():
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
         X, Y, category_names = load_data(database_filepath)
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
-        
+
         print('Building model...')
         model = build_model()
-        
+
         print('Training model...')
         model.fit(X_train, Y_train)
-        
+
         print('Evaluating model...')
         evaluate_model(model, X_test, Y_test, category_names)
 
