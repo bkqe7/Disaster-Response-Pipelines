@@ -60,4 +60,4 @@ The packages used are:
 ![results](https://github.com/bkqe7/Disaster-Response-Pipelines/blob/master/screen%20captures/screencapture2.png)
 
 ## Liscensing, Authors and Acknowledgements
-The data set is provided by [Figure Eight](https://www.figure-eight.com/).
+This is a Udacity Data Scientist Nano Degree project. The data set is provided by [Figure Eight](https://www.figure-eight.com/).
