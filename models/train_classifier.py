@@ -10,7 +10,7 @@ from nltk.corpus import stopwords
 import re
 
 from sklearn.pipeline import Pipeline,FeatureUnion
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report,f1_score
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier,AdaBoostClassifier
@@ -72,7 +72,7 @@ def build_model():
     'clf__estimator__learning_rate':[0.5,1]
     }
     # cross validation to tune parameters
-    cv = GridSearchCV(pipeline, param_grid = paramaters,verbose = 2,n_jobs = -1)
+    cv = GridSearchCV(pipeline, param_grid = paramaters,verbose =2)
     return cv
 
 def evaluate_model(model, X_test, y_test, category_names):
