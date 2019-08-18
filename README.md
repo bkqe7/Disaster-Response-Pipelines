@@ -55,9 +55,9 @@ The packages used are:
 3. Go to http://0.0.0.0:3001/
 
 ## Screenshots of the web app
-![plots](screencapture1.png)
+![plots](https://github.com/bkqe7/Disaster-Response-Pipelines/blob/master/screen%20captures/screencapture1.png)
 
-![results](screencapture2.png)
+![results](https://github.com/bkqe7/Disaster-Response-Pipelines/blob/master/screen%20captures/screencapture2.png)
 
 ## Liscensing, Authors and Acknowledgements
 The data set is provided by [Figure Eight](https://www.figure-eight.com/).
